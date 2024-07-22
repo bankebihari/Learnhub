@@ -11,8 +11,7 @@ import miscellaneousRoutes from './routes/miscellaneous.routes.js';
 import cors from 'cors';
 
 // Load environment variables
-config(); // Ensure this is called before using any environment variables
-
+config();  
 const app = express();
 const corsOptions = {
   origin: process.env.CLIENT_URL || 'http://localhost:5173', // Allow your frontend URL
