@@ -64,4 +64,5 @@ LearnHub is a comprehensive Learning Management System (LMS) designed to provide
 
 Visit [http://localhost:5173](http://localhost:5173) to access the LearnHub application.
 
+Thanks ...
 ---

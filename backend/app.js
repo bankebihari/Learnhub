@@ -1,37 +1,30 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
-import { configDotenv } from 'dotenv';
+import { config } from 'dotenv'; // Adjust import to `config` from `dotenv`
 import connectToDb from './config/db.config.js';
 import errorMiddleware from './middleware/error.middleware.js';
 import userRoutes from './routes/user.routes.js'; 
 import courseRoutes from './routes/course.routes.js'; 
 import paymentRoutes from './routes/payment.routes.js';
 import miscellaneousRoutes from './routes/miscellaneous.routes.js';
+import cors from 'cors';
+
+// Load environment variables
+config(); // Ensure this is called before using any environment variables
 
 const app = express();
-configDotenv();
-
-app.use((req, res, next) => {
-  const allowedOrigin = process.env.CLIENT_URL;
-  console.log('Allowed Origin:', allowedOrigin);
-
-  res.header('Access-Control-Allow-Origin', allowedOrigin);
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
-
-  // Respond to preflight requests
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
-  } else {
-    next();
-  }
-});
-
-
+const corsOptions = {
+  origin: process.env.CLIENT_URL || 'http://localhost:5173', // Allow your frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+};
 
 // Middleware
+app.use(cors({
+  origin: 'http://localhost:5173', // replace with your frontend URL
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -55,3 +48,4 @@ app.use(errorMiddleware);
 connectToDb();
 
 export default app;
+
